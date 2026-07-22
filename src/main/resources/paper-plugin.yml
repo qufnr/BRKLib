@@ -1,0 +1,16 @@
+name: BRKLib
+version: '${version}'
+prefix: BRKLib
+
+main: space.byeoruk.lib.MainPlugin
+api-version: '26.2'
+load: 'STARTUP'
+
+dependencies:
+  server:
+    ItemsAdder:
+      load: BEFORE
+      required: false
+
+author: 'qufnr'
+website: 'https://x.com/qufnrp'
