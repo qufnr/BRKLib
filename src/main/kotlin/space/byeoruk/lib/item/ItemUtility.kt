@@ -34,6 +34,24 @@ object ItemUtility {
     }
 
     /**
+     * Namespace가 포함된 아이템 이름 반환
+     *
+     * @return 아이템 이름
+     */
+    val ItemStack?.namespacedId: String?
+        get() {
+            if (this == null || type.isAir)
+                return null
+
+            val customStack = CustomStack.byItemStack(this)
+            if (customStack != null) {
+                return customStack.namespacedID
+            }
+
+            return type.key.toString()
+        }
+
+    /**
      * 해당 아이템이 ItemsAdder 아이템인지 여부 반환
      *
      * @return ItemsAdder 아이템일 경우 true 아니면 false 반환
