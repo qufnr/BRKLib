@@ -8,21 +8,30 @@ object ItemUtility {
     /**
      * 문자열로 아이템 스택 반환
      *
-     * @param name 아이템 문자열
+     * @param identifier 아이템 문자열
      * @return 아이템 스택
      */
-    fun getItemStackByName(name: String): ItemStack? =
-        if (name.lowercase().startsWith("minecraft:")) {
-            val material = Material.getMaterial(name.lowercase())
-            if (material != null)
-                ItemStack(material)
-            else
-                null
+    fun getItemStackByName(identifier: String, amount: Int = 1): ItemStack? {
+        val trimmed = identifier.trim().lowercase()
+
+        //  네임스페이스 구분
+        val explode = trimmed.split(":", limit = 2)
+        val namespace = if (explode.size > 1) explode[0] else "minecraft"
+        val key = if (explode.size > 1) explode[1] else explode[0]
+
+        return if (namespace == "minecraft") {
+            val material = Material.matchMaterial(key) ?: return null
+            ItemStack(material, amount)
         }
-        else if (name.lowercase().contains(":"))
-            CustomStack.getInstance(name)?.itemStack
-        else
-            null
+        else {
+            val fullNamespacedId = "$namespace:$key"
+            val customStack = CustomStack.getInstance(fullNamespacedId) ?: return null
+
+            val itemStack = customStack.itemStack.clone()
+            itemStack.amount = amount
+            itemStack
+        }
+    }
 
     /**
      * 해당 아이템이 ItemsAdder 아이템인지 여부 반환
@@ -30,10 +39,6 @@ object ItemUtility {
      * @return ItemsAdder 아이템일 경우 true 아니면 false 반환
      */
     fun ItemStack?.isCustomItem(): Boolean {
-        if (this == null || this.type.isAir) {
-            return false
-        }
-
-        return CustomStack.byItemStack(this) != null
+        return !(this == null || this.type.isAir) && CustomStack.byItemStack(this) != null
     }
 }
