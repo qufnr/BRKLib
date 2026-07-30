@@ -2,8 +2,6 @@ package space.byeoruk.lib.builder.item
 
 import com.destroystokyo.paper.profile.ProfileProperty
 import dev.lone.itemsadder.api.CustomStack
-import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.CustomModelData
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.DyeColor
@@ -24,34 +22,40 @@ class ItemBuilder {
     private val item: ItemStack
     private val meta: ItemMeta
 
-    constructor(material: Material, amount: Int) {
+    constructor(material: Material, amount: Int = 1) {
         item = ItemStack(material, amount)
         meta = item.itemMeta
     }
 
-    constructor(material: Material) {
-        item = ItemStack(material, 1)
-        meta = item.itemMeta
-    }
-
-    constructor(item: ItemStack) {
+    constructor(item: ItemStack, amount: Int = 1) {
         this.item = item
+        this.item.amount = amount
         meta = item.itemMeta
     }
 
-    constructor(customName: String, namespace: String, amount: Int) {
+    constructor(identifier: String, amount: Int = 1) {
+        val trimmed = identifier.trim()
+
+        if (trimmed.startsWith("minecraft:")) {
+            val material = Material.matchMaterial(trimmed) ?:
+                throw RuntimeException("\"$trimmed\" 아이템은 존재하지 않아요")
+            item = ItemStack(material, amount)
+            meta = item.itemMeta
+        }
+        else {
+            val customStack = CustomStack.getInstance(trimmed)
+                ?: throw RuntimeException("\"$trimmed\" 아이템은 존재하지 않아요. ItemsAdder 구성을 확인해 주세요")
+            item = customStack.itemStack
+            item.amount = amount
+            meta = item.itemMeta
+        }
+    }
+
+    constructor(customName: String, namespace: String, amount: Int = 1) {
         val customStack = CustomStack.getInstance("$namespace:$customName")
             ?: throw RuntimeException("\"$namespace:$customName\" 아이템은 존재하지 않아요. ItemsAdder 구성을 확인해 주세요")
         item = customStack.itemStack
         item.amount = amount
-        meta = item.itemMeta
-    }
-
-    constructor(customName: String, namespace: String) {
-        val customStack = CustomStack.getInstance("$namespace:$customName")
-            ?: throw RuntimeException("\"$namespace:$customName\" 아이템은 존재하지 않아요. ItemsAdder 구성을 확인해 주세요")
-        item = customStack.itemStack
-        item.amount = 1
         meta = item.itemMeta
     }
 
