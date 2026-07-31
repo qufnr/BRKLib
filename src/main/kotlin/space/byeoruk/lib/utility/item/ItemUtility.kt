@@ -1,4 +1,4 @@
-package space.byeoruk.lib.item
+package space.byeoruk.lib.utility.item
 
 import dev.lone.itemsadder.api.CustomStack
 import org.bukkit.Material

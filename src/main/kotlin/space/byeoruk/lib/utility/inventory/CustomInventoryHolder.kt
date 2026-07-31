@@ -1,4 +1,4 @@
-package space.byeoruk.lib.inventory
+package space.byeoruk.lib.utility.inventory
 
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent

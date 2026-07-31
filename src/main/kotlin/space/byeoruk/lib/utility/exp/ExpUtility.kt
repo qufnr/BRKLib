@@ -1,4 +1,4 @@
-package space.byeoruk.lib.exp
+package space.byeoruk.lib.utility.exp
 
 import org.bukkit.Location
 import org.bukkit.Sound

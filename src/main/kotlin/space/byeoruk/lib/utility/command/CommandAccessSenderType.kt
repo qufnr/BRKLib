@@ -1,4 +1,4 @@
-package space.byeoruk.lib.command
+package space.byeoruk.lib.utility.command
 
 enum class CommandAccessSenderType {
     ALL,

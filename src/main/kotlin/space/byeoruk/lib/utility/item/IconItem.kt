@@ -1,4 +1,4 @@
-package space.byeoruk.lib.item
+package space.byeoruk.lib.utility.item
 
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.DyeColor

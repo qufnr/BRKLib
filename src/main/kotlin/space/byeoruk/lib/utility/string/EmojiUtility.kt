@@ -1,4 +1,4 @@
-package space.byeoruk.lib.string
+package space.byeoruk.lib.utility.string
 
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper
 import net.kyori.adventure.text.Component

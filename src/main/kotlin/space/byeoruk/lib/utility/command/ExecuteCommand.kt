@@ -1,4 +1,4 @@
-package space.byeoruk.lib.command
+package space.byeoruk.lib.utility.command
 
 import org.bukkit.command.BlockCommandSender
 import org.bukkit.command.CommandSender

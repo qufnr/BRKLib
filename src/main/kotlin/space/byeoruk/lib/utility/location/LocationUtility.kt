@@ -1,4 +1,4 @@
-package space.byeoruk.lib.location
+package space.byeoruk.lib.utility.location
 
 import org.bukkit.Location
 import org.bukkit.Material

@@ -1,4 +1,4 @@
-package space.byeoruk.lib.config
+package space.byeoruk.lib.utility.config
 
 import org.bukkit.configuration.file.FileConfiguration
 import java.math.BigDecimal

@@ -1,4 +1,4 @@
-package space.byeoruk.lib.command
+package space.byeoruk.lib.utility.command
 
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit

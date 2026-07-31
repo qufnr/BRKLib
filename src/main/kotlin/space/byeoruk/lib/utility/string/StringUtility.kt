@@ -1,4 +1,4 @@
-package space.byeoruk.lib.string
+package space.byeoruk.lib.utility.string
 
 import org.bukkit.Bukkit
 

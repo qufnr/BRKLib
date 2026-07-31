@@ -1,4 +1,4 @@
-package space.byeoruk.lib.sound
+package space.byeoruk.lib.utility.sound
 
 import org.bukkit.Sound
 import org.bukkit.entity.Player
