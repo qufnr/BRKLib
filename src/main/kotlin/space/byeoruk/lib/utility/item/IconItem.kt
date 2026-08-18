@@ -11,8 +11,9 @@ import space.byeoruk.lib.builder.item.ItemBuilder
 object IconItem {
     private val mm = MiniMessage.miniMessage()
 
-    const val LORE_PREFIX = "<!italic><dark_grey> · <grey>"
-    const val ACTION_PREFIX = "<italic><dark_grey>"
+    const val LORE_PREFIX = "<!italic><#81D4FA>| </#81D4FA><#E1F5FE>"
+    const val ACTION_PREFIX = "<!italic><#0091EA>| <#0091EA><#80D8FF>"
+    const val DIVIDE = "<!italic><#01579B><st>--------------------------</st><#01579B>"
 
     /**
      * 이전 아이콘
