@@ -3,6 +3,7 @@ package space.byeoruk.lib.builder.item
 import com.destroystokyo.paper.profile.ProfileProperty
 import dev.lone.itemsadder.api.CustomStack
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.DyeColor
 import org.bukkit.Location
@@ -70,12 +71,19 @@ class ItemBuilder {
         return this
     }
 
+    fun displayName(name: String): ItemBuilder {
+        val mm = MiniMessage.miniMessage()
+        meta.displayName(mm.deserialize(name))
+        return this
+    }
+
     /**
      * Lore 설정
      *
      * @param elements 로어 내용
      * @return ItemBuilder
      */
+    @JvmName("loreComponent")
     fun lore(elements: List<Component>): ItemBuilder {
         var lore = meta.lore()
         if (lore == null) {
@@ -83,6 +91,21 @@ class ItemBuilder {
         }
         else {
             lore.addAll(elements)
+        }
+        meta.lore(lore)
+        return this
+    }
+
+    @JvmName("loreString")
+    fun lore(elements: List<String>): ItemBuilder {
+        val mm = MiniMessage.miniMessage()
+        val components = elements.map { mm.deserialize(it) }
+        var lore = meta.lore()
+        if (lore == null) {
+            lore = components
+        }
+        else {
+            lore.addAll(components)
         }
         meta.lore(lore)
         return this
