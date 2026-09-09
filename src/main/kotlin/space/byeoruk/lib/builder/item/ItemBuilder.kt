@@ -2,6 +2,7 @@ package space.byeoruk.lib.builder.item
 
 import com.destroystokyo.paper.profile.ProfileProperty
 import dev.lone.itemsadder.api.CustomStack
+import io.papermc.paper.datacomponent.DataComponentTypes
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
@@ -186,8 +187,32 @@ class ItemBuilder {
         return this
     }
 
+    /**
+     * 최대 스택 설정
+     *
+     * @param amount 스택
+     * @return ItemBuilder
+     */
+    fun allowStack(amount: Int): ItemBuilder {
+        if (amount <= item.maxStackSize) {
+            return this
+        }
+
+        //  내구도가 있는 아이템은 `max_stack_size` 와 공존할 수 없음
+        if (item.getData(DataComponentTypes.MAX_DAMAGE) != null) {
+            return this
+        }
+
+        meta.setMaxStackSize(amount.coerceAtMost(MAX_STACK_LIMIT))
+        return this
+    }
+
     fun build(): ItemStack {
         item.itemMeta = meta
         return item
+    }
+
+    companion object {
+        private const val MAX_STACK_LIMIT = 99
     }
 }
