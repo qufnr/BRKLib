@@ -1,7 +1,7 @@
 package space.byeoruk.lib
 
 import org.bukkit.plugin.java.JavaPlugin
-import space.byeoruk.lib.utility.inventory.CustomInventoryListener
+import space.byeoruk.lib.inventory.listener.CustomInventoryListener
 
 internal class MainPlugin : JavaPlugin() {
 
