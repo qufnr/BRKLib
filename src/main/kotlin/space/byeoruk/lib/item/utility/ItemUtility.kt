@@ -3,6 +3,8 @@ package space.byeoruk.lib.item.utility
 import dev.lone.itemsadder.api.CustomStack
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import space.byeoruk.lib.MainPlugin
+import java.util.Locale
 
 object ItemUtility {
     const val LORE_PREFIX = "<!italic><#81D4FA>| </#81D4FA><#E1F5FE>"           //  200, 50
@@ -62,7 +64,18 @@ object ItemUtility {
      *
      * @return ItemsAdder 아이템일 경우 true 아니면 false 반환
      */
-    fun ItemStack?.isCustomItem(): Boolean {
-        return !(this == null || this.type.isAir) && CustomStack.byItemStack(this) != null
-    }
+    fun ItemStack?.isCustomItem(): Boolean =
+        !(this == null || this.type.isAir) && CustomStack.byItemStack(this) != null
+
+    /**
+     * 해당 언어로 보이는 이름을 평문으로 반환
+     *
+     * @param locale 언어
+     * @return 아이템 이름 평문 문자열
+     */
+    fun ItemStack?.nameOf(locale: Locale): String? =
+        if (this != null)
+            MainPlugin.plugin.itemLanguageManager.nameOf(this, locale)
+        else
+            null
 }
