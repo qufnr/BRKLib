@@ -1,58 +1,36 @@
 package space.byeoruk.lib.command.utility
 
-import org.bukkit.command.BlockCommandSender
 import org.bukkit.command.CommandSender
-import org.bukkit.command.ConsoleCommandSender
-import org.bukkit.command.RemoteConsoleCommandSender
-import org.bukkit.entity.Player
-import space.byeoruk.lib.command.model.CommandAccessSenderType
+import org.bukkit.command.ProxiedCommandSender
+import space.byeoruk.lib.command.model.CommandAccessType
+import java.util.EnumSet
 
 interface ExecuteCommand {
     val names: List<String>
-    val description: String
-        get() = "No description."
-    val permission: String
-        get() = "*"
-    val accessSenderType: CommandAccessSenderType
-        get() = CommandAccessSenderType.ALL
 
-    /**
-     * 명령어 제안
-     *
-     * @param sender 명령어 호출자
-     * @param args 명령어 인자
-     * @return 제안 목록
-     */
+    val description: String get() = "No description"
+
+    val permission: String? get() = null
+
+    val accessTypes: Set<CommandAccessType> get() = EnumSet.allOf(CommandAccessType::class.java)
+
     fun suggest(sender: CommandSender, args: Array<String>): List<String> = emptyList()
 
-    /**
-     * 명령어 호출
-     *
-     * @param sender 명령어 호출자
-     * @param args 명령어 인자
-     */
-    fun execute(sender: CommandSender, args: Array<out String>)
+    fun execute(sender: CommandSender, args: Array<String>)
 
-    /**
-     * 이 명령어에 접근할 수 있는지 여부 반환
-     *
-     * @param sender 명령어 전송한 개체
-     * @param checkPermission 권한 확인 (PLAYER의 경우에만 확인)
-     * @return 명령어에 접근할 수 있으면 true 아니면 false 반환
-     */
-    fun canAccess(sender: CommandSender, checkPermission: Boolean = false): Boolean =
-        when(accessSenderType) {
-            CommandAccessSenderType.PLAYER -> {
-                val player = sender as? Player ?: return false
-                !checkPermission || player.hasPermission(permission)
-            }
-            CommandAccessSenderType.OP -> {
-                val player = sender as? Player ?: return false
-                player.isOnline && player.isOp
-            }
-            CommandAccessSenderType.COMMAND_BLOCK -> sender is BlockCommandSender
-            CommandAccessSenderType.CONSOLE -> sender is ConsoleCommandSender
-            CommandAccessSenderType.REMOTE_CONSOLE -> sender is RemoteConsoleCommandSender
-            else -> true
+    fun canAccess(sender: CommandSender): Boolean {
+        val target =
+            //  /execute as, 커맨드 마인카트 등으로 감싸져 들어온 경우 실제 대상을 꺼낸다
+            (sender as? ProxiedCommandSender)?.callee
+                ?: sender
+
+        val type = CommandAccessType.of(target) ?: return false
+
+        if (type !in accessTypes) {
+            return false
         }
+
+        val node = permission ?: return true
+        return sender.hasPermission(node)
+    }
 }
