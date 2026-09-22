@@ -1,7 +1,9 @@
 package space.byeoruk.lib
 
 import org.bukkit.plugin.java.JavaPlugin
+import space.byeoruk.lib.inventory.listener.CustomAnvilInventoryListener
 import space.byeoruk.lib.inventory.listener.CustomInventoryListener
+import space.byeoruk.lib.inventory.utility.CustomAnvilInventory
 import space.byeoruk.lib.item.manager.ItemLanguageManager
 
 internal class MainPlugin : JavaPlugin() {
@@ -16,11 +18,14 @@ internal class MainPlugin : JavaPlugin() {
     }
 
     override fun onDisable() {
+        CustomAnvilInventory.unregisterAll()
+
         instance = null
     }
 
     private fun registerEvents() {
         server.pluginManager.registerEvents(CustomInventoryListener(), this)
+        server.pluginManager.registerEvents(CustomAnvilInventoryListener(), this)
     }
 
     private fun registerManagers() {
